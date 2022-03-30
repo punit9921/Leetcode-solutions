@@ -1,25 +1,30 @@
 class Solution {
 public:
     bool isPossible(vector<int>& nums) {
-        unordered_map<int,priority_queue<int,vector<int>,greater<int>>>mp;
-        int need=0;
+       unordered_map<int,int>subs,freq;
         for(auto it:nums)
         {
-            if(mp[it-1].empty()==false)
+            freq[it]++;
+        }
+        for(auto it:nums)
+        {
+            if(!freq[it])
+                continue;
+            freq[it]--;
+            if(subs[it-1]>0)
             {
-                int cnt=mp[it-1].top();
-                mp[it-1].pop();
-                mp[it].push(++cnt);
-                
-                if(cnt==3)
-                    need--;
+                subs[it-1]--;
+                subs[it]++;
+            }
+            else if(freq[it+1] and freq[it+2])
+            {
+                freq[it+1]--;
+                freq[it+2]--;
+                subs[it+2]++;
             }
             else
-            {
-                mp[it].push(1);
-                need++;
-            }
+                return false;
         }
-        return need==0;
+        return true;
     }
 };
