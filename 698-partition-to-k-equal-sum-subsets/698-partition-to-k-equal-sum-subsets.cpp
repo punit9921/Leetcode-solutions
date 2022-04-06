@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool help(vector<int>&a,int n,vector<int> &subset,vector<int> &vis,int sum,int start,int end,int k)
+     bool help(vector<int>&a,int n,vector<int> &subset,vector<int> &vis,int sum,int start,int end,int k)
 {
 	if(subset[start]==sum)
 	{
