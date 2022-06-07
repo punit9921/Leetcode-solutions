@@ -14,14 +14,13 @@ public:
     int ans;
    void solve(TreeNode* root,int &k)
    {
-       if(root==NULL)
-           return ;
-      solve(root->left,k);
-      
-       k=k-1;
+        if(root==NULL)
+            return ;
+       solve(root->left,k);
+       k--;
        if(k==0)
-           ans= root->val;
-      solve(root->right,k);
+           ans=root->val;
+       solve(root->right,k);
        
          //  return right;
    }
