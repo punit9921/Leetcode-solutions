@@ -13,13 +13,13 @@ public:
     }
     int solve(string &s,int i,int j)
     {
-        if(i>=j)
-            return 0;
+       if(i>=j)
+           return 0;
         if(dp[i][j]!=-1)
             return dp[i][j];
         if(ispall(s,i,j))
             return 0;
-        int ans=INT_MAX;
+        int ans = INT_MAX;
         for(int k=i;k<j;k++)
         {
             if(ispall(s,i,k))
