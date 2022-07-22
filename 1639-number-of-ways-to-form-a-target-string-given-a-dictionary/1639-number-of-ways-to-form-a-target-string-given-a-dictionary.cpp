@@ -1,49 +1,35 @@
 class Solution {
 public:
-    #define ll long long 
-    const ll MOD = 1e9 + 7; // Using long long for MOD to avoid overflows
-    
-    int n;  // Length of word
-    vector<vector<ll>> freq, mem;
-    string target;
-    
-    // DFS : Takes in current index of word and target
-    int go(int w, int t) {
-        
-        // If we exceed target's length, we've matched everything in target
-        if(t >= target.size()) 
+    vector<vector<long long>>freq;
+    int n;
+    int dp[1001][1001];
+    const int mod=1e9+7;
+    int solve(string &target,int i,int j)
+    {
+        if(j>=target.size())
             return 1;
-        
-        // Else if we exceed word's length, we haven't matched target
-        if(w >= n) 
+        if(i>=n)
             return 0;
-        
-        // If we've processed this before, return the value from the memoization table
-        ll &ans = mem[w][t];
-        if(ans > -1) 
-            return ans;
-        
-        int cur = target[t] - 'a';
-        
-        // Else return the sum of :
-        //   1) Don't match the current character of target to current index of word (go(w + 1, t))
-        //   2) Match the current character of target to word (freq[w][cur] * go(w + 1, t + 1))
-        // Note: There are freq[w][cur] options to choose the current letter, hence the multiplier 
-        // Note: MOD's are needed to avoid overflows - apply MOD after every operation        
-        return ans = (go(w + 1, t) + ((freq[w][cur] * go(w + 1, t + 1)) % MOD)) % MOD;
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+      long long  int ans=0;
+        ans=solve(target,i+1,j)%mod;
+        int ind=target[j]-'a';
+        ans=(ans+(freq[ind][i]*(solve(target,i+1,j+1))%mod)%mod)%mod;
+        return dp[i][j]=ans;
+            
     }
-    int numWays(vector<string>& words, string _target) {
-        target = _target;
-        int i, j, m = words.size();
-        n = words[0].size();
-        freq.resize(n, vector<ll>(26, 0));
-        mem.resize(n + 1, vector<ll>(target.size() + 1, -1));
-        
-        // Build a frequency table indexed by word position
-        for(i=0; i<m; i++)
-            for(j=0; j<n; j++)
-                freq[j][words[i][j] - 'a']++;
-        
-        return go(0, 0);
+    int numWays(vector<string>& words, string target) {
+        n=words[0].size();
+        freq=vector<vector<long long>>(26,vector<long long>(n,0));
+        for(auto it:words)
+        {
+            for(int i=0;i<it.size();i++)
+            {
+                freq[it[i]-'a'][i]++;
+            }
+        }
+        memset(dp,-1,sizeof(dp));
+        return solve(target,0,0);
     }
 };
